@@ -13,7 +13,7 @@ export default new Command({
             fields: [
                 { name: "Online", value: query.players.online.toString(), inline: true },
                 { name: "Max", value: query.players.max.toString(), inline: true },
-                { name: "List", value: codeBlock(query.players.list.join(", ")) }
+                { name: "List", value: codeBlock(query.players.length > 0 ? query.players.list.join(", ") : "None") }
             ]
         });
 
