@@ -1,20 +1,23 @@
-import { Colors, EmbedBuilder, codeBlock } from "discord.js";
+import { EmbedBuilder, codeBlock, resolveColor } from "discord.js";
 import { Command } from "../def";
-import { queryServer } from "../lib/common";
+import { isBedrockPlayer, queryServer } from "../lib/common";
 
 export default new Command({
     name: "players",
-    description: "List online players",
+    description: "List online players.",
     handler: async (interaction) => {
         const query = await queryServer();
 
+        const javaPlayers = (query.players?.list.filter(p => !isBedrockPlayer(p)) ?? []).map(p => p.name_clean);
+        const bedrockPlayers = (query.players?.list.filter(isBedrockPlayer) ?? []).map(p => p.name_clean);
+
         const embed = new EmbedBuilder({
-            color: Colors.Blurple,
+            color: resolveColor("#86bdbb"),
             fields: [
-                { name: "Online", value: query.players.online.toString(), inline: true },
-                { name: "Max", value: query.players.max.toString(), inline: true },
-                { name: "List", value: codeBlock(query.players.length > 0 ? query.players.list.join(", ") : "None") }
-            ]
+                { name: "Players", value: `${query.players?.online}/${query.players?.max}` },
+                { name: `Java (${javaPlayers.length})`, value: codeBlock(javaPlayers.length > 0 ? javaPlayers.join(", ") : "None") },
+                { name: `Bedrock (${bedrockPlayers.length})`, value: codeBlock(bedrockPlayers.length > 0 ? bedrockPlayers.join(", ") : "None") },
+            ],
         });
 
         await interaction.editReply({ embeds: [embed] });

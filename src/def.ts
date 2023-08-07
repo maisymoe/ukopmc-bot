@@ -1,12 +1,19 @@
 import { ApplicationCommandOptionData, ChatInputCommandInteraction } from "discord.js";
 
+// Ripped from the node-mcstatus library because they don't export it.
+export interface Player {
+    uuid: string;
+    name_raw: string;
+    name_clean: string;
+    name_html: string;
+}
+
 export interface Config {
     server: {
-        ip: string;
+        host: string;
         port?: number;
     }
     discord: {
-        whitelist: string[];
         token: string;
     }
 }

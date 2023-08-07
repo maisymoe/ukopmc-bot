@@ -1,6 +1,6 @@
 import { ApplicationCommandData, ApplicationCommandType } from "discord.js";
-import { queryFull } from "minecraft-server-util";
-import { Command } from "../def";
+import { statusJava } from "node-mcstatus";
+import { Command, Player } from "../def";
 import config from "./config";
 
 export function convertToDiscordCommands(commands: Command[]) {
@@ -18,6 +18,5 @@ export function convertToDiscordCommands(commands: Command[]) {
     return convertedCommands;
 }
 
-export async function queryServer() {
-    return await queryFull(config.server.ip, config.server.port ?? 25565, {});
-}
+export const queryServer = async () => await statusJava(config.server.host, config.server.port ?? 25565, { query: true });
+export const isBedrockPlayer = (player: Player) => player.name_clean.startsWith(".");

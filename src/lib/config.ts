@@ -3,7 +3,7 @@ import { join } from "path";
 import { proxy, subscribe } from "valtio/vanilla";
 import { Config } from "../def";
 
-const configFile = join(__dirname, "../", "../", "data", "config.json");
+const configFile = join(__dirname, "../", "../", "config.json");
 let parsedConfig;
 
 try {
